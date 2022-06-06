@@ -6,7 +6,7 @@ extends MovementProvider
 ## Movement Provider for Bullet Time (Slow-Mo)
 ##
 ## @desc:
-##     This script provides "bullet time" aka Matrix, Max Payne movement to the player.  The user
+##     This script provides "bullet time" aka Matrix, SuperHot movement to the player.  The user
 ##     can determine for how long it works and what button triggers the motion.
 ##
 
@@ -15,7 +15,7 @@ extends MovementProvider
 export var order := 35
 
 ## Length of bullet time effect
-export var slo_mo_time := 1.25
+export var slo_mo_time := 1.5
 
 ## Set ease in and out time
 export var slo_mo_ease := .25
@@ -63,7 +63,7 @@ signal bullet_time_off
 
 
 # Activate bullet time
-func physics_movement(delta: float, player_body: PlayerBody):
+func physics_movement(_delta: float, _player_body: PlayerBody, _disabled: bool):
 	
 	# Skip if the controller isn't active
 	if !_controller.get_is_active():
@@ -85,12 +85,11 @@ func physics_movement(delta: float, player_body: PlayerBody):
 			
 		if is_bullet_time == false:	
 			emit_signal("bullet_time_off")
-			$SloMo_Sound.play()
 			$SloMo_Tween.stop_all()
 			$SloMo_Tween.interpolate_property(Engine, "time_scale", Engine.time_scale, normal_time_scale, slo_mo_ease, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
 			$SloMo_Tween.start()
 			yield($SloMo_Tween, "tween_completed")
-				
+			$SloMo_Sound.play()	
 	
 
 

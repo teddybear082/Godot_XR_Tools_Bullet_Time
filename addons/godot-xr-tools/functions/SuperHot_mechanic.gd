@@ -6,10 +6,10 @@ extends Node
 export var active := true
 
 ## Set slomo lerp scale 
-export var slo_mo_ease := 20
+export var slo_mo_ease := 30
 
 ## Slomo time scale (percentage of engine speed)
-export var slowmo_time_scale := .03
+export var slowmo_time_scale := .01
 
 ## Normal time sclae
 export var normal_time_scale = 1.0
@@ -18,7 +18,7 @@ export var normal_time_scale = 1.0
 export var time_to_check_in_msec :float = 100.0
 
 ## Arbitrary Threshold to determine if enough movement to move time (in godot units)
-var slowmo_threshold : float = .01
+export var slowmo_threshold : float = .02
 
 ## Hand and Camera nodepaths
 export (NodePath) var arvrcamera_path  = ""

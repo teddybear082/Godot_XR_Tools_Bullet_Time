@@ -39,6 +39,9 @@ var arvrcamera_position : Vector3 = Vector3.ZERO
 var last_l_hand_position : Vector3 = Vector3.ZERO
 var last_r_hand_position : Vector3 = Vector3.ZERO
 var last_arvrcamera_position : Vector3 = Vector3.ZERO
+var time_elapsed_in_msecs : float = 0.0
+var current_time_in_msecs : float = 0.0
+var last_time_in_msecs : float = 0.0
 
 ## Tell other nodes when slomo is active or not
 signal slomo_active
@@ -51,11 +54,14 @@ func _ready():
 	last_l_hand_position = l_hand_node.global_transform.origin
 	last_r_hand_position = r_hand_node.global_transform.origin
 	last_arvrcamera_position = arvrcamera_node.global_transform.origin
-
+	current_time_in_msecs = OS.get_ticks_msec()
+	last_time_in_msecs = current_time_in_msecs
 
 # Main handling of slomo
 func _physics_process(delta):
-	slomo = calc_slomo()
+	if time_elapsed() >= 10.0:
+		last_time_in_msecs = OS.get_ticks_msec()
+		slomo = calc_slomo()
 	
 	# If player's movement is not past movement threshold, slomo stays in effect, otherwise moves to normal time scale
 	if slomo:
@@ -66,8 +72,12 @@ func _physics_process(delta):
 		#emit_signal("slomo_off")
 		Engine.time_scale = lerp(Engine.time_scale, normal_time_scale, delta * slo_mo_ease)		
 	
-
-func calc_slomo():
+func time_elapsed() -> float:
+	current_time_in_msecs = OS.get_ticks_msec()
+	time_elapsed_in_msecs = current_time_in_msecs - last_time_in_msecs
+	return time_elapsed_in_msecs
+	
+func calc_slomo() -> bool:
 	l_hand_position = l_hand_node.global_transform.origin
 	r_hand_position = r_hand_node.global_transform.origin
 	arvrcamera_position = arvrcamera_node.global_transform.origin

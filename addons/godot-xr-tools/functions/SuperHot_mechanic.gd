@@ -60,6 +60,9 @@ func _ready():
 
 # Main handling of slomo
 func _physics_process(delta):
+	#if not active, do not process
+	if !active:
+		return
 	
 	#if time since last check is greater than 100 miliseconds in real time / .1 second, then recalculate whether should be in slomo
 	if OS.get_ticks_msec() - time_elapsed_in_msecs >= time_to_check_in_msec:
